@@ -13,6 +13,14 @@ st.write('''
 - Schiavon, Leandro Nicolás
 - Segovia Albarado, Nicolás Daniel
 ''')
+
+st.write('\n ## Sobre tratamiento de datos nulos')
+st.write('''
+- Categóricas → `'Desconocido'` cuando faltan valores (MCAR)
+- Numéricas → **mediana** (global) salvo que se pueda imputar por grupo (ej.: provincia)
+- Reemplazos puntuales con **0** o **moda** cuando corresponda.
+''')
+
 # --- Carga de Datos ---
 # Asegúrate de que este archivo "base_da_2_con_faltantes.csv" esté
 # en la raíz de tu repositorio de GitHub, junto a este app.py
@@ -35,13 +43,13 @@ try:
 
     st.write('\n\n##### Descripción del dataset ')
 
-    st.write('\n--- Describe (numéricas) ---')
+    st.write('\n ##### Describe (numéricas) ')
     st.dataframe(df.describe(include=[np.number]).T)
 
-    st.write('\n--- Describe (objetos) ---')
+    st.write('\n##### Describe (objetos) ')
     st.dataframe(df.describe(include=['object']).T)
 
-    st.write('\n\n------> Información completa de las 5 primeras filas del dataset:')
+    st.write('\n\n##### Información completa de las 5 primeras filas del dataset:')
     st.dataframe(df.head())
 
 
@@ -50,7 +58,7 @@ try:
     #-------------------------------------------
 
     # Conteo y porcentaje de nulos por columna
-    st.write('\n\n------> Detección de valores nulos (Original) <------')
+    st.write('\n\n##### Detección de valores nulos (Original) ')
     nulos = df.isnull().sum().sort_values(ascending=False)
     porc_nulos = (df.isnull().mean() * 100).round(2).sort_values(ascending=False)
     df_nulos = pd.concat([nulos, porc_nulos], axis=1, keys=['nulos','%_nulos'])
@@ -61,7 +69,7 @@ try:
     #       Limpieza y tratamiento de datos Nulos
     #--------------------------------------------------
 
-    st.write('\n\n------> Limpieza y tratamiento de datos Nulos <------')
+    st.write('\n\n#### Limpieza y tratamiento de datos Nulos ')
 
     # Creamos copia para preservar original
     df_clean = df.copy()
@@ -72,13 +80,13 @@ try:
 
     # 1) Categóricas: sustituir nulos por 'Desconocido'
     cat_con_nulos = [c for c in cat_cols if df_clean[c].isnull().sum()>0]
-    st.write('\n--> Columnas categóricas con nulos: ', cat_con_nulos)
+    st.write('\n##### Columnas categóricas con nulos: ', cat_con_nulos)
     for c in cat_con_nulos:
         df_clean[c] = df_clean[c].fillna('Desconocido')
 
     # 2) Numéricas: sustituir por mediana global
     num_con_nulos = [c for c in numeric_cols if df_clean[c].isnull().sum()>0]
-    st.write('\n--> Columnas numéricas con nulos:', num_con_nulos)
+    st.write('\n##### Columnas numéricas con nulos:', num_con_nulos)
     for c in num_con_nulos:
         med = df_clean[c].median()
         df_clean[c] = df_clean[c].fillna(med)
@@ -90,7 +98,7 @@ try:
         # Asegurémonos de tomar una columna numérica que *tenía* nulos
         if num_con_nulos:
             target_num = num_con_nulos[0]
-            st.write(f'\n--> Imputando {target_num} por mediana según {prov_col} (si hay nulos)')
+            st.write(f'\n##### Imputando {target_num} por mediana según {prov_col} (si hay nulos)')
             # Usamos df (original) para el groupby.transform y aplicamos a df_clean
             # Nota: Esto puede ser complejo si la propia 'prov_col' tenía nulos
             try:
@@ -111,19 +119,19 @@ try:
         st.write(f'Reemplazado ejemplo numérica {example_num} nulos por 0')
 
 
-    st.write('\n\n--> Nulos restantes por columna (después):')
+    st.write('\n\n##### Nulos restantes por columna (después):')
     st.dataframe(df_clean.isnull().sum().sort_values(ascending=False).head(60))
 
 
     # Conteo y porcentaje de nulos en clean
-    st.write('\n\n------> Dataset limpio sin valores nulos (Resumen) <------')
+    st.write('\n\n#### Dataset limpio sin valores nulos (Resumen) ')
     nulos_clean = df_clean.isnull().sum().sort_values(ascending=False)
     porc_nulos_clean = (df_clean.isnull().mean() * 100).round(2).sort_values(ascending=False)
     df_nulos_clean = pd.concat([nulos_clean, porc_nulos_clean], axis=1, keys=['nulos','%_nulos'])
     st.dataframe(df_nulos_clean.head(60))
 
 
-    st.write('\n\n------> Análisis Exploratorio de Datos (EDA) <------')
+    st.write('\n\n#### Análisis Exploratorio de Datos (EDA) ')
 
     st.write(f'Número de columnas numéricas: {len(numeric_cols)}')
     st.write(f'Número de columnas categóricas: {len(cat_cols)}')
@@ -178,7 +186,7 @@ try:
 
     st.write('# Transformaciones y creación de nuevas columnas útiles')
 
-    st.write('\n\n------> Variables numéricas - Resumen <------')
+    st.write('\n\n#### Variables numéricas - Resumen')
 
     # Variables numéricas resumen (suma/mean)
     df_clean['numeric_sum'] = df_clean.select_dtypes(include=[np.number]).sum(axis=1)
