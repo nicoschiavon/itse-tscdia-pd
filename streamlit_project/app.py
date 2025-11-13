@@ -7,7 +7,7 @@ from pathlib import Path
 # --- Carga de Datos ---
 # Asegúrate de que este archivo "base_da_2_con_faltantes.csv" esté
 # en la raíz de tu repositorio de GitHub, junto a este app.py
-path = "base_da_2_con_faltantes.csv"
+path = Path(__file__).parent / "base_da_2_con_faltantes.csv"
 
 try:
     df = pd.read_csv(path, sep=None, engine='python')
