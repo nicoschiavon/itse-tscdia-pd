@@ -130,8 +130,10 @@ try:
     df_nulos_clean = pd.concat([nulos_clean, porc_nulos_clean], axis=1, keys=['nulos','%_nulos'])
     st.dataframe(df_nulos_clean.head(60))
 
-
-    st.write('\n\n#### Análisis Exploratorio de Datos (EDA) ')
+    st.write('\n #### Visualizaciones iniciales')
+    st.write('''
+    ##### Generamos histogramas para variables numéricas, barras para categóricas y un scatter entre dos numéricas si existen.
+    ''')
 
     st.write(f'Número de columnas numéricas: {len(numeric_cols)}')
     st.write(f'Número de columnas categóricas: {len(cat_cols)}')
@@ -184,9 +186,8 @@ try:
         st.write('No hay suficientes columnas numéricas para scatter.')
 
 
-    st.write('# Transformaciones y creación de nuevas columnas útiles')
-
-    st.write('\n\n#### Variables numéricas - Resumen')
+    st.write('### Transformaciones y creación de nuevas columnas útiles')
+    st.write('#### Se crean columnas de trazabilidad y resumen por fila.')
 
     # Variables numéricas resumen (suma/mean)
     df_clean['numeric_sum'] = df_clean.select_dtypes(include=[np.number]).sum(axis=1)
