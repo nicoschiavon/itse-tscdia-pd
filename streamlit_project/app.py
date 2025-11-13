@@ -4,6 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
+st.title('Análisis de Datos con Streamlit: Detección y Tratamiento de Valores Nulos')
+st.write('### Asignatura: Procesamiento de Datos')
+st.write('### Grupo 1:')
+st.write('''
+- Carabajal, Elba Julieta
+- Bucci, Carlos Matias
+- Schiavon, Leandro Nicolás
+- Segovia Albarado, Nicolás Daniel
+''')
 # --- Carga de Datos ---
 # Asegúrate de que este archivo "base_da_2_con_faltantes.csv" esté
 # en la raíz de tu repositorio de GitHub, junto a este app.py
@@ -12,9 +21,9 @@ path = Path(__file__).parent / "base_da_2_con_faltantes.csv"
 try:
     df = pd.read_csv(path, sep=None, engine='python')
 
-    st.write('\n------> Dimensiones del dataset: ', df.shape)
+    st.write('\n ##### Dimensiones del dataset: ', df.shape)
 
-    st.write('\n\n------> Información del dataset:')
+    st.write('\n\n##### Información del dataset:')
     # df.info() no se muestra bien en st.write, usamos st.text o un dataframe
     # Para mostrar info() de pandas, es mejor capturarla
     import io
@@ -24,7 +33,7 @@ try:
     st.text(s)
 
 
-    st.write('\n\n------> Descripción del dataset <------')
+    st.write('\n\n##### Descripción del dataset ')
 
     st.write('\n--- Describe (numéricas) ---')
     st.dataframe(df.describe(include=[np.number]).T)
