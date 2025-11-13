@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-st.title('Análisis de Datos con Streamlit: Detección y Tratamiento de Valores Nulos')
+st.title('Detección y Tratamiento de Valores Nulos')
 st.write('### Asignatura: Procesamiento de Datos')
 st.write('### Grupo 1:')
 st.write('''
